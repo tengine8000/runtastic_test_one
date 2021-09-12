@@ -128,4 +128,69 @@ class TraceTest extends TestCase
         $response->assertNotFound();
     }
     
+    /**
+     * PUT Specific Trace
+     */
+    public function test_trace_update_route_with_id_and_no_payload()
+    {
+        $response = $this->postJson('/api/traces', 
+                        [
+                ['latitude' => 32.9377784729004, 'longitude' => -117.2303924560],
+                ['latitude' => -32.9377784729004, 'longitude' => 16.2303924560],
+                ['latitude' => 32.9377784729004, 'longitude' => -10.2303924560],
+                ['latitude' => -88.9377784729004, 'longitude' => 117.2303924560],
+            ]
+        );
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'trace_id' => true
+            ]);
+
+        $trace_id = $response['trace_id'];
+
+        $response = $this->putJson('/api/traces/'.$trace_id, []);
+
+        $response
+            ->assertStatus(400)
+            ->assertJson([
+                'error' => true,
+            ]);
+    }
+    public function test_trace_update_route_with_id_and_new_payload()
+    {
+        $response = $this->postJson('/api/traces', 
+            [
+                ['latitude' => 32.9377784729004, 'longitude' => -117.2303924560],
+                ['latitude' => -32.9377784729004, 'longitude' => 16.2303924560],
+                ['latitude' => 32.9377784729004, 'longitude' => -10.2303924560],
+                ['latitude' => -88.9377784729004, 'longitude' => 117.2303924560],
+            ]
+        );
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'trace_id' => true
+            ]);
+
+        $trace_id = $response['trace_id'];
+
+        $response = $this->putJson('/api/traces/'.$trace_id, [
+                ['latitude' => 20.9377784729004, 'longitude' => -117.2303924560],
+                ['latitude' => -20.9377784729004, 'longitude' => 16.2303924560],
+                ['latitude' => 20.9377784729004, 'longitude' => -10.2303924560],
+                ['latitude' => -88.9377784729004, 'longitude' => 117.2303924560],
+        ]);
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'trace_id' => true
+            ]);
+    }
 }

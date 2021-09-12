@@ -88,7 +88,7 @@ class TraceController extends Controller
             'error' => 'Trace Data not found!'
             ], 404);
         }
-        
+
         return response()->json([
             'success' => 'Trace Data',
             'data' => $trace->gps_points
@@ -104,7 +104,47 @@ class TraceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->isJson()) {
+            $data = ['data' => $request->input()];
+
+            $trace = Trace::where('id', $id)->first();
+            if(!$trace) return response()->json(['error' => 'Invalid Trace ID!'], 404);
+
+            if(count($request->all()) == 0) {
+                return response()->json(
+                ['error' => 'No Trace data given!'], 400);
+            }
+
+            $validator = Validator::make($data, [
+                'data.*.latitude' => 'required|numeric|min:-180|max:180',
+                'data.*.longitude' => 'required|numeric|min:-180|max:180'
+            ]);
+            
+            if ($validator->fails()) {
+                return response()->json([
+                    'error' => 'Trace data invalid!',
+                    'message' => $data,
+                ], 422);
+            }else{
+                $validated = $validator->validated();
+
+                GPSPoint::where('trace_id', $trace->id)->delete();
+
+                foreach ($validated['data'] as $gps_point) {
+                    GPSPoint::create([
+                        'latitude'=>$gps_point['latitude'],
+                        'longitude'=>$gps_point['longitude'],
+                        'trace_id'=>$trace->id,
+                    ])->save();
+                }
+    
+    
+                return response()->json([
+                    'success' => 'Trace data updated successfully',
+                    'trace_id' => $trace->id
+                ], 201);
+            }
+        }
     }
 
     /**
