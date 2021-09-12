@@ -49,8 +49,6 @@ class TraceController extends Controller
             }else{
                 $validated = $validator->validated();
 
-                // TODO Make the GPS Points here...
-                // dd($validated['data'][0]);
                 $trace = Trace::create([
                     'created_at' => Carbon::now()
                 ]);
@@ -83,7 +81,18 @@ class TraceController extends Controller
      */
     public function show($id)
     {
-        //
+        $trace = Trace::where('id', $id)->first();
+
+        if(!$trace){
+            return response()->json([
+            'error' => 'Trace Data not found!'
+            ], 404);
+        }
+        
+        return response()->json([
+            'success' => 'Trace Data',
+            'data' => $trace->gps_points
+        ]);
     }
 
     /**

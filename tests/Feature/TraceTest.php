@@ -82,4 +82,50 @@ class TraceTest extends TestCase
                 'trace_id' => true
             ]);;
     }
+
+    /**
+     * GET Specific Trace
+     */
+    public function test_can_get_existing_trace_data_given_id()
+    {
+        $response = $this->postJson('/api/traces', 
+                        [
+                ['latitude' => 32.9377784729004, 'longitude' => -117.2303924560],
+                ['latitude' => -32.9377784729004, 'longitude' => 16.2303924560],
+                ['latitude' => 32.9377784729004, 'longitude' => -10.2303924560],
+                ['latitude' => -88.9377784729004, 'longitude' => 117.2303924560],
+            ]
+        );
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'trace_id' => true
+            ]);
+
+        $trace_id = $response['trace_id'];
+
+        // GET trace with given id
+        $response = $this->get('/api/traces/'.$trace_id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+                'data' => true
+            ]);
+
+    }
+
+    public function test_cannot_get_trace_data_given_invalid_id()
+    {
+        $trace_id = 78; // invalid id
+
+        // GET trace with given id
+        $response = $this->get('/api/traces/'.$trace_id);
+
+        $response->assertNotFound();
+    }
+    
 }
