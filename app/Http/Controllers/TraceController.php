@@ -8,6 +8,7 @@ use App\Models\Trace;
 use App\Models\GPSPoint;
 use Illuminate\Support\Carbon;
 use App\Http\Services\CumulativeDistanceCalculator;
+use Illuminate\Support\Facades\Http;
 
 class TraceController extends Controller
 {
@@ -93,19 +94,30 @@ class TraceController extends Controller
         $cdc = new CumulativeDistanceCalculator(0);
 
         $new_trace_format = [];
-        $trace->gps_points->map(function ($gps_point, $key) use ($cdc, &$new_trace_format) {
-            array_push($new_trace_format, 
-                [
-                    'latitude' => $gps_point->latitude,
-                    'longitude' => $gps_point->longitude,
-                    'distance' => $cdc->generate(),
-                ]);
-        });
+        $elevation_response = Http::post('https://codingcontest.runtastic.com/api/elevations/bulk', $trace->gps_points->toArray());
+        if(!$elevation_response->failed()){
+            $elevations = $elevation_response->json();
+            $trace->gps_points->map(function ($gps_point, $key) use ($cdc, &$new_trace_format, $elevations) {
+                array_push($new_trace_format, 
+                    [
+                        'latitude' => $gps_point->latitude,
+                        'longitude' => $gps_point->longitude,
+                        'distance' => $cdc->generate(),
+                        'elevation' => $elevations[$key]
+                    ]);
+            });
+    
+            return response()->json([
+                'success' => 'Trace Data',
+                'data' => $new_trace_format
+            ]);
 
-        return response()->json([
-            'success' => 'Trace Data',
-            'data' => $new_trace_format
-        ]);
+        }else{
+            return response()->json([
+                'error' => 'Elevation Service failure!'
+            ], 502);
+        }
+
     }
 
     /**

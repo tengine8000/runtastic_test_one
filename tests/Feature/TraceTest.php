@@ -122,7 +122,8 @@ class TraceTest extends TestCase
                     '*' => [
                         'latitude',
                         'longitude',
-                        'distance'
+                        'distance',
+                        'elevation'
                     ]
                 ]
             ]);
