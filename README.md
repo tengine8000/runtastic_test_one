@@ -1,64 +1,52 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## 💼 &nbsp; About Runtastic_THT 1
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+
+ Create a RESTful stand alone web application that is able to persist collections of GPS points (collection in JSON format). These collections are called traces. You can download sample traces from here.
+
+Keep in mind that this web application should work for a large amount of users and that it is likely to receive about 10 times more read than write requests.
+
+### 🛠 &nbsp; Installation
+
+This project was built with the popular Laravel Framework.
+
+Follow the steps below to have it running on your local system:
+Steps:
+- Download and unzip the folder
+- Change directory into the project root folder ```cd runtastic_test_one/```
+- Run ```composer update``` to install al the required packages
+- Setup your local ```MySQL``` database
+- Add the database connection parameters to your ```.env``` file
+- Run migrations ```php artisan migrate``` to create relevant tables
+- Run ```php artisan key:generate``` to generate the secure application keys
+
+If you encounter any problems installing the project or you want to learn more about installing Laravel, you can go to the [Laravel Installation Guide](https://laravel.com/docs/8.x/installation).
+
+### ⚙️ &nbsp; Running and Testing
+
+To get this project up and running on port ```3003```,
+ type ```php artisan serve --port=3003``` and hit enter.
+ 
+ Then test all the existing endpoints using ```curl```, [Postman](https://www.postman.com/), or [REST Client plugin](https://github.com/Huachao/vscode-restclient) if you are using [VSCode](https://code.visualstudio.com/)<img src="https://raw.githubusercontent.com/ABSphreak/ABSphreak/master/gifs/Hi.gif" width="20px" />
+
+##### **Using Curl**
+- ```$ curl -i -X PUT -d @/tmp/trace1.json http://localhost:3003/traces/1 ```
+
+- ```$ curl -i -X POST -d @/tmp/trace1.json http://localhost:3003/traces```
+
+
+##### **Using REST Client plugin**
+
+This is a lot easier and more fun.
+
+Go to the ```test.http``` file at the root of the project, and if you have the plugin installed, you will see the ```Send Request``` links above each of the sample request I created in the file for tests.
+
+You can edit and click each of the requests to see the responses.
+### Further Information
+
+If you need to learn more about this project, feel free to contact me.
+
+<p align="left">
+<a href="https://www.tortyemmanuel.com/"><img alt="Website" src="https://img.shields.io/badge/Website-www.tortyemmanuel.com-blue?style=rounded-square&logo=google-chrome"></a>
+<a href="https://www.linkedin.com/in/emmanuel-torty-60052153/"><img alt="LinkedIn" src="https://img.shields.io/badge/LinkedIn-Emmanuel%20Torty-blue?style=rounded-square&logo=linkedin"></a>
+<a href="mailto:torty.emmanuel@gmail.com"><img alt="Email" src="https://img.shields.io/badge/Email-torty.emmanuel@gmail.com-blue?style=rounded-square&logo=gmail"></a>
 </p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[CMS Max](https://www.cmsmax.com/)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
