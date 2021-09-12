@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Trace;
+use App\Models\GPSPoint;
+use Illuminate\Support\Carbon;
 
 class TraceController extends Controller
 {
@@ -45,13 +48,26 @@ class TraceController extends Controller
                 ], 422);
             }else{
                 $validated = $validator->validated();
-                
+
                 // TODO Make the GPS Points here...
+                // dd($validated['data'][0]);
+                $trace = Trace::create([
+                    'created_at' => Carbon::now()
+                ]);
+                $trace->save();
+
+                foreach ($validated['data'] as $gps_point) {
+                    GPSPoint::create([
+                        'latitude'=>$gps_point['latitude'],
+                        'longitude'=>$gps_point['longitude'],
+                        'trace_id'=>$trace->id,
+                    ])->save();
+                }
     
     
                 return response()->json([
                     'success' => 'Trace data created successfully',
-                    'data' => $validated
+                    'trace_id' => $trace->id
                 ], 201);
             }
             

@@ -64,7 +64,7 @@ class TraceTest extends TestCase
             ]);
     }
 
-    public function test_trace_create_route_with_valid_payload()
+    public function test_trace_create_route_with_valid_payload_returns_trace_data()
     {
         $response = $this->postJson('/api/traces', 
                         [
@@ -79,7 +79,7 @@ class TraceTest extends TestCase
             ->assertStatus(201)
             ->assertJson([
                 'success' => true,
-                'data' => true,
+                'trace_id' => true
             ]);;
     }
 }
