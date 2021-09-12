@@ -116,6 +116,15 @@ class TraceTest extends TestCase
             ->assertJson([
                 'success' => true,
                 'data' => true
+            ])
+            ->assertJsonStructure([
+                'data' => [
+                    '*' => [
+                        'latitude',
+                        'longitude',
+                        'distance'
+                    ]
+                ]
             ]);
 
     }

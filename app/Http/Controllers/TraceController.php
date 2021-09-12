@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\Trace;
 use App\Models\GPSPoint;
 use Illuminate\Support\Carbon;
+use App\Http\Services\CumulativeDistanceCalculator;
 
 class TraceController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -88,10 +90,21 @@ class TraceController extends Controller
             'error' => 'Trace Data not found!'
             ], 404);
         }
+        $cdc = new CumulativeDistanceCalculator(0);
+
+        $new_trace_format = [];
+        $trace->gps_points->map(function ($gps_point, $key) use ($cdc, &$new_trace_format) {
+            array_push($new_trace_format, 
+                [
+                    'latitude' => $gps_point->latitude,
+                    'longitude' => $gps_point->longitude,
+                    'distance' => $cdc->generate(),
+                ]);
+        });
 
         return response()->json([
             'success' => 'Trace Data',
-            'data' => $trace->gps_points
+            'data' => $new_trace_format
         ]);
     }
 
