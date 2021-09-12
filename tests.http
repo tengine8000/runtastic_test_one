@@ -35,3 +35,8 @@ Content-Type: application/json
 { "latitude": 32.9379005432129, "longitude": -117.22998046875 },
 { "latitude": 32.937931060791, "longitude": -117.229949951172 },
 { "latitude": 32.9379615783691, "longitude": -117.229919433594 }]
+
+###
+DELETE http://127.0.0.1:8000/api/traces/7
+Accept: application/json
+Content-Type: application/json

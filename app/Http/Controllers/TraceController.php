@@ -155,6 +155,20 @@ class TraceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $trace = Trace::where('id', $id)->first();
+        if(!$trace){
+            return response()->json([
+            'error' => 'Trace does not exist',
+            ], 404);
+        }
+        
+        GPSPoint::where('trace_id', $trace->id)->delete();
+
+        $trace->delete();
+
+        return response()->json([
+            'success' => 'Trace data deleted successfully',
+        ], 200);
+
     }
 }

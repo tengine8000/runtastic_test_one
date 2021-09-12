@@ -8,6 +8,8 @@ use Tests\TestCase;
 
 class TraceTest extends TestCase
 {
+
+    use RefreshDatabase;
     /**
      * Test route exists.
      *
@@ -159,6 +161,7 @@ class TraceTest extends TestCase
                 'error' => true,
             ]);
     }
+
     public function test_trace_update_route_with_id_and_new_payload()
     {
         $response = $this->postJson('/api/traces', 
@@ -192,5 +195,49 @@ class TraceTest extends TestCase
                 'success' => true,
                 'trace_id' => true
             ]);
+    }
+
+    /**
+     * DELETE Trace with id
+     */
+    public function test_can_delete_existing_trace_data_given_id()
+    {
+        $response = $this->postJson('/api/traces', 
+                        [
+                ['latitude' => 32.9377784729004, 'longitude' => -117.2303924560],
+                ['latitude' => -32.9377784729004, 'longitude' => 16.2303924560],
+                ['latitude' => 32.9377784729004, 'longitude' => -10.2303924560],
+                ['latitude' => -88.9377784729004, 'longitude' => 117.2303924560],
+            ]
+        );
+
+        $response
+            ->assertStatus(201)
+            ->assertJson([
+                'success' => true,
+                'trace_id' => true
+            ]);
+
+        $trace_id = $response['trace_id'];
+
+        // DELETE trace with given id
+        $response = $this->delete('/api/traces/'.$trace_id);
+
+        $response
+            ->assertStatus(200)
+            ->assertJson([
+                'success' => true,
+            ]);
+
+    }
+
+    public function test_cannot_delete_trace_data_given_invalid_id()
+    {
+        $trace_id = 88; // invalid id
+
+        // GET trace with given id
+        $response = $this->delete('/api/traces/'.$trace_id);
+
+        $response->assertNotFound();
     }
 }
