@@ -11,11 +11,13 @@ class GPSPoint extends Model
     use HasFactory;
 
     protected $table = 'gps_points';
-    protected $visible = ['latitude', 'longitude'];
+    protected $visible = ['latitude', 'longitude', 'distance', 'elevation'];
 
     protected $fillable = [
         'latitude',
         'longitude',
+        'distance',
+        'elevation',
         'trace_id'
     ];
 

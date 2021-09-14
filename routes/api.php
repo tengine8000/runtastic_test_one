@@ -15,9 +15,4 @@ use App\Http\Controllers\TraceController;
 |
 */
 
-Route::get('/traces', function(Request $request){
-    response()->json([], 200);
-});
-
-
 Route::resource('traces', TraceController::class);
